@@ -1,0 +1,5 @@
+[en]
+TEAMMATES_MONEY = Teammates money:
+
+[cn]
+TEAMMATES_MONEY = 当前队友金钱:

@@ -1,0 +1,5 @@
+[en]
+DENY_SILENTRUN = Silentrun is forbidden on this server!
+
+[cn]
+DENY_SILENTRUN = 服务器已禁止滚轮小跳,谢谢合作！

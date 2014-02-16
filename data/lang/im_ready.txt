@@ -1,0 +1,25 @@
+[en]
+READY_TIME_LEFT = If you don't ready in %d seconds,you will be banned for 1 minute!
+NOT_READY_KICK1 = I'm sorry about that you had been bannd for 1 minute cause not ready...
+NOT_READY_KICK2 = %s has been kicked cause not ready...
+NEED_NUMBER = %d players ready left:
+DASHBOARD_MSG1 = This is a AutoMatch Plugins^nAfter all players ready,start knife^nround.After knife round,match start
+DASHBOARD_MSG2 = Warning:There is no break after first^nhalf.Remember finish the match^nCommands：
+DASHBOARD_MSG3 = Ready: say ready^nCancel Ready: say notready^nVote Maps: say votemap
+SPEC_READY = Spectators can not use this command.
+MATCH_READY = Match was already started.Don't need say ready any more.
+MATCH_ALREADY = You were ready.Don't need say ready any more.
+READY = is ready.
+
+[cn]
+READY_TIME_LEFT = 如果您在%d秒内不准备，则会被断开与服务器的连接！
+NOT_READY_KICK1 = 抱歉，您由于长时间未准备，断开您与服务器的连接1分钟……
+NOT_READY_KICK2 = %s 由于长时间未准备被断开连接。
+NEED_NUMBER = 还需要%d位选手准备：
+DASHBOARD_MSG1 = 本插件为自动比赛插件，无须OP^n所有选手准备后将自动进入刀局^n拼刀完毕后，比赛将自动开始
+DASHBOARD_MSG2 = 友情提示：比赛中场不休息^n请各位选手自觉完成比赛^n命令提示：
+DASHBOARD_MSG3 = 准备开始：say ready^n取消准备：say notready^n投票换图：say votemap
+SPEC_READY = 观察者不能使用这个命令。
+MATCH_READY = 比赛已经开始了，不需要准备了。
+MATCH_ALREADY = 你已经准备完毕，不需要准备了。
+READY = 已经准备完毕。

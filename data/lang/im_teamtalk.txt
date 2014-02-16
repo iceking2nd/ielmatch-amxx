@@ -1,0 +1,15 @@
+[en]
+TT_ALIVE_TALK = You are respawn.You can talk with your teammates over voice now
+TT_DEAD_TALK = You are dead.You can still talk with your teammates over voice
+TT_DEAD_TALK1 = Times up.Now you can't talk with your teammates over voice now
+TT_DEAD_TALK2 = You are dead.But you can talk with your teammates over voice in %d seconds
+TT_DEAD_TALK3 = Now you can talk with alive teammates over voice
+TT_DEAD_TALK4 = You are dead.You can talk with alive teammates over voice after %d seconds
+
+[cn]
+TT_ALIVE_TALK = 你已经出生, 现在你可以与你的队友正常语音通话
+TT_DEAD_TALK = 你挂了, 但你仍然可以与你的队友语音通话
+TT_DEAD_TALK1 = 时间到, 你现在不能跟活着的队友通话了
+TT_DEAD_TALK2 = 你挂了, 但 %d 秒内你仍然可以与活着的队友通话
+TT_DEAD_TALK3 = 你现在可以跟活着的队友通话了
+TT_DEAD_TALK4 = 你挂了, %d 秒后你可与活着的队友通话
