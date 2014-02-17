@@ -63,7 +63,7 @@ public rdy_check_task(id)
 		if (rdy_player_ready_num >= 10)
 		{
 			if(get_pcvar_num(rdy_p_kniferound) == 1) match_start(1);
-			else match_start(0);
+			else match_start(4);
 		}
 
 	}
@@ -77,7 +77,7 @@ public rdy_kick_player(id)
 //	server_cmd("banid 1 #%d", uID);
 	client_cmd(id, "echo ^"[iM] %L^"", id, "NOT_READY_KICK1");
 	server_cmd("kick #%d [iM] %L",uID, id, "NOT_READY_KICK1");
-	client_print(0, print_chat, "[im] %s %L", name, LANG_PLAYER, "NOT_READY_KICK2");
+	client_print(0, print_chat, "[iM] %s %L", name, LANG_PLAYER, "NOT_READY_KICK2");
 }
 
 public rdy_player_ready(id)
@@ -104,4 +104,39 @@ public rdy_player_ready(id)
 	rdy_player_ready_num++;
 
 	return PLUGIN_HANDLED;
+}
+
+public rdy_player_unready(id)
+{
+	if(cs_get_user_team(id) == CS_TEAM_SPECTATOR)
+	{
+		ColorChat(id, TEAM_COLOR, "^x01%L", id, "SPEC_NOTREADY");
+		return PLUGIN_HANDLED;
+	}
+	if(match_get_inmatch())
+	{
+		ColorChat(id, TEAM_COLOR, "^x01%L", id, "MATCH_NOTREADY");
+		return PLUGIN_HANDLED;
+	}
+	if(!rdy_player_isready[id])
+	{
+		ColorChat(id, TEAM_COLOR, "^x01%L", id, "MATCH_NOTALREADY");
+		return PLUGIN_HANDLED;
+	}
+	new rName[32];
+	get_user_name(id,rName,31);
+	ColorChat(id, TEAM_COLOR, "%s ^x01%L", rName, id, "NOTREADY");
+	rdy_player_isready[id] = false;
+	rdy_player_ready_num--;
+	return PLUGIN_HANDLED;
+}
+
+public rdy_client_disconnect(id)
+{
+	if(rdy_player_isready[id])
+	{
+		rdy_player_kick_timeleft[id] = 0;
+		rdy_player_isready[id] = false;
+		rdy_player_ready_num--;
+	}
 }

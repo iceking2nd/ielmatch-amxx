@@ -37,6 +37,7 @@ public plugin_init()
 	register_dictionary("im_team_money.txt");
 	register_dictionary("im_anti_silentrun.txt");
 	register_dictionary("im_ready.txt");
+	register_dictionary("im_match.txt");
 
 	register_event("TextMsg", "restart_round", "a", "2&#Game_C", "2&#Game_w");
 	register_event("SendAudio", "end_round", "a", "2&%!MRAD_terwin", "2&%!MRAD_ctwin", "2&%!MRAD_rounddraw");
@@ -59,6 +60,11 @@ public plugin_cfg()
 public client_connect(id)
 {
 	tt_client_connect(id);
+}
+
+public client_disconnect(id)
+{
+	rdy_client_disconnect(id);
 }
 
 public client_authorized(id)

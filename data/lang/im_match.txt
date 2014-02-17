@@ -1,0 +1,17 @@
+[en]
+MATCH_FINISH = Match Finished & Good Game.
+KNIFE_R3 = Knife round will begin in few second
+KNIFE_ROUND = Knife Round !!!
+MATCH_R1 = -- LIVE IN 3 RESTARTS --
+MATCH_R2 = -- LIVE IN 2 RESTARTS --
+MATCH_R3 = -- LIVE AFTER RESTART --
+MATCH_GL = -- Game is LIVE GL & HF --
+
+[cn]
+MATCH_FINISH = 比赛结束！GG！
+KNIFE_R3 = 刀局即将开始
+KNIFE_ROUND = 刀局！！！
+MATCH_R1 = -- 第一次刷新 --
+MATCH_R2 = -- 第二次刷新 --
+MATCH_R3 = -- 第三次刷新 --
+MATCH_GL = -- 比赛开始 GL & HF --

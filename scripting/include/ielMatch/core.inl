@@ -8,12 +8,32 @@ enum cc_Color
 	BLUE, // Blue
 }
 
+enum EXPORTCMD
+{
+	MATCHNAME,
+}
+
+new Export[EXPORTCMD][125];
+
 new cc_TeamName[][] = 
 {
 	"",
 	"TERRORIST",
 	"CT",
 	"SPECTATOR"
+}
+
+public core_plug_init()
+{
+	register_srvcmd("im_matchname", "core_get_matchname");
+}
+
+public core_get_matchname()
+{
+	new ThisCmd[64];
+	read_argv(0, ThisCmd, 63);
+	if(equal(ThisCmd, "im_matchname"))
+		read_argv(1, Export[MATCHNAME], 63);
 }
 
 stock ShowDirectorMessage(id, Float:x, Float:y, r, g, b, effect, Float:fadeintime, Float:fadeouttime, Float:holdtime, Float:fxtime, msg[], {Float, Sql, Result, _}:...)
