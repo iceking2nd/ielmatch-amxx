@@ -26,8 +26,9 @@
 #include "include/ielMatch/teamtalk.inl"
 #include "include/ielMatch/team_money.inl"
 #include "include/ielMatch/anti_silentrun.inl"
-#include "include/ielMatch/ready.inl"
 #include "include/ielMatch/match.inl"
+#include "include/ielMatch/ready.inl"
+#include "include/ielMatch/vote.inl"
 
 public plugin_init()
 {
@@ -38,9 +39,11 @@ public plugin_init()
 	register_dictionary("im_anti_silentrun.txt");
 	register_dictionary("im_ready.txt");
 	register_dictionary("im_match.txt");
+	register_dictionary("im_vote.txt");
 
 	register_event("TextMsg", "restart_round", "a", "2&#Game_C", "2&#Game_w");
 	register_event("SendAudio", "end_round", "a", "2&%!MRAD_terwin", "2&%!MRAD_ctwin", "2&%!MRAD_rounddraw");
+	register_logevent("round_start", 2, "0=World triggered", "1=Round_Start");
 
 	RegisterHam(Ham_Spawn, "player", "FwdPlayerSpawn", 1);
 
@@ -48,8 +51,10 @@ public plugin_init()
 	tm_plugin_init();
 	asr_plugin_init();
 	rdy_plugin_init();
+	match_plugin_init();
 
 	rdy_set_task();
+	match_start(0);
 }
 
 public plugin_cfg()
@@ -72,8 +77,14 @@ public client_authorized(id)
 	server_msg(id);
 }
 
+public client_putinserver(id)
+{
+	core_client_putinserver(id);
+}
+
 public FwdPlayerSpawn(id)
 {
+	core_FwdPlayerSpawn(id);
 	tm_FwdPlayerSpawn(id);
 	return HAM_IGNORED;
 }
@@ -85,7 +96,26 @@ public restart_round()
 
 public end_round()
 {
+	if(match_get_iskniferound())
+	{
+		new param[12]	
+		read_data(2,param,8)
+		if (param[7]=='c') //%!MRAD_ctwin
+		{
+			vote_knife_round_win(CS_TEAM_CT)
+		}
+		else //%!MRAD_terwin
+		{
+			vote_knife_round_win(CS_TEAM_T)
+		}
+	}
 	tm_end_round();
+	match_end_round();
+}
+
+public round_start()
+{
+	match_round_start();
 }
 
 public server_msg(id)
@@ -97,5 +127,5 @@ public server_msg(id)
 	client_cmd(id,"echo > - Mailto: wxc@wxccs.org");
 	client_cmd(id,"echo > - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - <");
 	client_cmd(id,"echo ");
-	engclient_cmd(id,"setinfo","Auto Match plugin %s",VERSION);    
+	engclient_cmd(id,"setinfo","iel Match plugin %s",VERSION);    
 }

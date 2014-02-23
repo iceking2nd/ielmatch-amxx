@@ -23,9 +23,33 @@ new cc_TeamName[][] =
 	"SPECTATOR"
 }
 
+new CsInternalModel:_ModelsRandom[8] = 
+{
+	CS_T_TERROR,
+	CS_T_LEET,
+	CS_T_ARCTIC,
+	CS_T_GUERILLA,
+	CS_CT_URBAN,
+	CS_CT_GSG9,
+	CS_CT_GIGN,
+	CS_CT_SAS
+}
+
+new core_g_swap_team;
+new bool:core_g_ChangeOneModels[33];
+new core_g_ServerName, core_g_Hostname;
+
 public core_plug_init()
 {
 	register_srvcmd("im_matchname", "core_get_matchname");
+
+	register_clcmd("say thetime", "core_GetTime");
+	register_clcmd("say time", "core_GetTime");
+	register_clcmd("say sj", "core_GetTime");
+
+	core_g_swap_team = CreateMultiForward("swap_team", ET_IGNORE);
+	core_g_ServerName = get_user_msgid("ServerName");
+	core_g_Hostname = get_cvar_pointer("hostname");
 }
 
 public core_get_matchname()
@@ -176,4 +200,137 @@ cc_Team_Info(id, type, team[])
 	message_end();
 
 	return 1;
+}
+
+public is_player(id)
+{
+	if (is_user_connected(id) && !is_user_bot(id) && !is_user_hltv(id))
+		return true;
+	return false;
+}
+
+public core_swap_team()
+{
+	new gResult;
+	ExecuteForward(core_g_swap_team, gResult);
+	static player;
+	for(player = 1; player <= get_maxplayers(); player++)
+	{
+		if(!is_user_connected(player)) continue;
+		
+		switch(get_user_team(player))
+		{
+			case 1: cs_set_user_team(player, 2);
+			case 2: cs_set_user_team(player, 1);
+		}
+		user_kill(player, 1);
+		set_task(1.0, "core_OpenModelMenu", player);
+	}
+}
+
+public core_OpenModelMenu(id)
+{
+	new menu = menu_create("\ySelect your appearance", "core_ModelMenuHandler");
+	if(cs_get_user_team(id) == CS_TEAM_T)
+	{
+		menu_additem(menu, "Phoenix Connexion", "1", 0);
+		menu_additem(menu, "Elite Crew", "2", 0);
+		menu_additem(menu, "Arctic Avengers", "3", 0);
+		menu_additem(menu, "Guerilla Warfare", "4", 0);
+	}
+	else if(cs_get_user_team(id) == CS_TEAM_CT)
+	{
+		menu_additem(menu, "Seal Team 6", "1", 0);
+		menu_additem(menu, "GSG-9", "2", 0);
+		menu_additem(menu, "SAS", "3", 0);
+		menu_additem(menu, "GIGN", "4", 0);
+	}
+	menu_setprop(menu, MPROP_EXITNAME, "EXIT");
+	menu_display(id, menu, 0);
+}
+
+public core_ModelMenuHandler(id, menu, item)
+{
+	if(item == MENU_EXIT)
+	{
+		menu_destroy(menu);
+		return PLUGIN_HANDLED;
+	}
+	new data[6], iName[64];
+	new access, callback;
+	menu_item_getinfo(menu, item, access, data,5, iName, 63, callback);
+	new key = str_to_num(data);
+	
+	if(!is_player(id)) return PLUGIN_HANDLED;
+
+	core_g_ChangeOneModels[id] = true;
+	
+	if(cs_get_user_team(id) == CS_TEAM_T)
+	{
+		switch(key)
+		{
+			case 1: cs_set_user_team(id, CS_TEAM_T, _ModelsRandom[0]);
+			case 2: cs_set_user_team(id, CS_TEAM_T, _ModelsRandom[1]);
+			case 3: cs_set_user_team(id, CS_TEAM_T, _ModelsRandom[2]);
+			case 4: cs_set_user_team(id, CS_TEAM_T, _ModelsRandom[3]);
+		}
+	}
+	else if(cs_get_user_team(id) == CS_TEAM_CT)
+	{
+		switch(key)
+		{
+			case 1: cs_set_user_team(id, CS_TEAM_CT, _ModelsRandom[4]);
+			case 2: cs_set_user_team(id, CS_TEAM_CT, _ModelsRandom[5]);
+			case 3: cs_set_user_team(id, CS_TEAM_CT, _ModelsRandom[7]);
+			case 4: cs_set_user_team(id, CS_TEAM_CT, _ModelsRandom[6]);
+		}
+	}
+	menu_destroy(menu);
+	return PLUGIN_HANDLED;
+}
+
+public core_client_putinserver(id)
+{
+	core_g_ChangeOneModels[id] = false;
+}
+
+public core_FwdPlayerSpawn(id)
+{
+	core_g_ChangeOneModels[id] = false;
+}
+
+public core_GetTime(id)
+{
+	new MONTHS[12][] = {"1","2","3","4","5","6","7","8","9" ,"10","11","12"}
+	new WEEK[7][] = {"一","二","三","四","五","六","日"}
+	new DAY[31][] = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"}
+	new ns_Hour[3], ns_Minutes[3], ns_Month[3], ns_Day[3], ns_Year[5], ns_second[3], ns_week[5];
+	
+	get_time("%H", ns_Hour, charsmax(ns_Hour));
+	get_time("%M", ns_Minutes, charsmax(ns_Minutes));
+	get_time("%m", ns_Month, charsmax(ns_Month));
+	get_time("%d", ns_Day, charsmax(ns_Day));
+	get_time("%Y", ns_Year, charsmax(ns_Year));
+	get_time("%S", ns_second, charsmax(ns_second));
+	get_time("%w", ns_week, charsmax(ns_week));
+	
+	if(!str_to_num(ns_week))
+		ColorChat(id, TEAM_COLOR, "【%s年%s月%s日 星期%s】", ns_Year, MONTHS[str_to_num(ns_Month) -1], DAY[str_to_num(ns_Day) -1], WEEK[str_to_num(ns_week) + 6]);
+	else
+		ColorChat(id, TEAM_COLOR, "【%s年%s月%s日 星期%s】", ns_Year, MONTHS[str_to_num(ns_Month) -1], DAY[str_to_num(ns_Day) -1], WEEK[str_to_num(ns_week) - 1]);
+	
+	ColorChat(id, TEAM_COLOR, "【北京时间：%s:%s:%s】", ns_Hour, ns_Minutes, ns_second);
+	
+	return PLUGIN_HANDLED;
+}
+
+stock SetServerName(msg[], {Float,Sql,Result,_}:...)
+{
+	static text[64];
+	vformat(text, charsmax(text), msg, 2);
+	message_begin(MSG_ALL, core_g_ServerName, {0,0,0}, 0);
+	write_string(text);
+	message_end();
+	
+	console_print(0, text);
 }

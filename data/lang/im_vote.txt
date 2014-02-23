@@ -1,0 +1,11 @@
+[en]
+VOTE_TEAM_TITLE = Voting for your team:
+CT = Counter-Terrorisms
+T = Terrorisms
+EXIT = EXIT
+
+[cn]
+VOTE_TEAM_TITLE = 投票选择你的队伍？
+CT = 反恐精英
+T = 恐怖分子
+EXIT = 退出
