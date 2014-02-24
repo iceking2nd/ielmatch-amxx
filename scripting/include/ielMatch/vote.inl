@@ -2,9 +2,9 @@
 new bool:vote_gb_map_voting = false;
 new vote_gn_map_voting_limits = 0;
 new vote_ga_map_voting_result[7];
+new bool:vote_gb_team_voting;
 new vote_gm_team_voting;
 new vote_ga_team_voting_result[2];
-new vote_gn_TeamVoting;
 
 new const vote_ga_MapName[][] =
 {
@@ -19,11 +19,13 @@ new const vote_ga_MapName[][] =
 
 public vote_get_is_vote_map() return vote_gb_map_voting;
 public vote_set_is_vote_map(bool:val) vote_gb_map_voting = val;
+public vote_get_is_team_voting() return vote_gb_team_voting;
+public vote_set_is_team_voting(bool:val) vote_gb_team_voting = val;
 
 public vote_plugin_init()
 {
 	register_clcmd("say votemap", "vote_check_access", IM_ACCESS);
-	vote_gn_TeamVoting = 0;
+	vote_gb_team_voting = false;
 	vote_ga_team_voting_result[0] = 0;
 	vote_ga_team_voting_result[1] = 0;
 }
@@ -42,18 +44,18 @@ public vote_check_access(id, level)
 
 public vote_knife_round_win(CsTeams:win_team)
 {
-	if (vote_gn_TeamVoting) return PLUGIN_HANDLED;
+	if (vote_get_is_team_voting()) return PLUGIN_HANDLED;
 
-	new temp_voting_title[64], temp_voting_ct[16], temp_voting_t[16], temp_voting_exit[16];
+	new temp_voting_title[64], temp_voting_switch[16], temp_voting_keep[16], temp_voting_exit[16];
 
 	formatex( temp_voting_title, charsmax(temp_voting_title), "%L", LANG_PLAYER, "VOTE_TEAM_TITLE" )
-	formatex( temp_voting_ct, charsmax(temp_voting_ct), "%L", LANG_PLAYER, "CT" )
-	formatex( temp_voting_t, charsmax(temp_voting_t), "%L", LANG_PLAYER, "T" )
+	formatex( temp_voting_switch, charsmax(temp_voting_switch), "%L", LANG_PLAYER, "SWITCH" )
+	formatex( temp_voting_keep, charsmax(temp_voting_keep), "%L", LANG_PLAYER, "KEEP" )
 	formatex( temp_voting_exit, charsmax(temp_voting_exit), "%L", LANG_PLAYER, "EXIT" )
 
 	vote_gm_team_voting = menu_create(temp_voting_title, "vote_team_menu_handler");
-	menu_additem(vote_gm_team_voting, temp_voting_t, "0", 0);
-	menu_additem(vote_gm_team_voting, temp_voting_ct, "1", 0);
+	menu_additem(vote_gm_team_voting, temp_voting_switch, "0", 0);
+	menu_additem(vote_gm_team_voting, temp_voting_keep, "1", 0);
 
 	for(new tempid = 1; tempid <= get_maxplayers(); tempid++)
 	{
@@ -62,18 +64,17 @@ public vote_knife_round_win(CsTeams:win_team)
 		{
 			menu_setprop(vote_gm_team_voting, MPROP_EXITNAME, temp_voting_exit);
 			menu_display(tempid, vote_gm_team_voting, 0);
-			vote_gn_TeamVoting++;
+			vote_set_is_team_voting(true);
 		}
 	}
 
-	if(win_team == CS_TEAM_T) set_task(10.0, "vote_team_vote_end", _,"CS_TEAM_T");
-	if(win_team == CS_TEAM_CT) set_task(10.0, "vote_team_vote_end", _,"CS_TEAM_CT");
+	set_task(10.0, "vote_team_vote_end");
 	return PLUGIN_HANDLED;
 }
 
 public vote_team_menu_handler(id, menu, item)
 {
-	if(!vote_gn_TeamVoting) return PLUGIN_HANDLED;
+	if(!vote_get_is_team_voting()) return PLUGIN_HANDLED;
 	
 	if(item == MENU_EXIT)
 		return PLUGIN_HANDLED;
@@ -86,34 +87,26 @@ public vote_team_menu_handler(id, menu, item)
 	return PLUGIN_HANDLED;
 }
 
-public vote_team_vote_end(args[])
+public vote_team_vote_end()
 {
-	new CsTeams:win_team;
-	if(equal(args, "CS_TEAM_T")) win_team = CS_TEAM_T;
-	else if(equal(args, "CS_TEAM_CT")) win_team = CS_TEAM_CT;
+	client_print(0, print_chat, "[iM] 交换：%d 保持：%d", vote_ga_team_voting_result[0], vote_ga_team_voting_result[1]);
 
 	if(vote_ga_team_voting_result[0] > vote_ga_team_voting_result[1])
 	{
-		if(win_team == CS_TEAM_CT) core_swap_teams();
+		core_swap_teams();
 		match_show_teams();
 		match_start(4);
 		
 	}
-	else if(vote_ga_team_voting_result[1] > vote_ga_team_voting_result[0])
-	{
-		if(win_team == CS_TEAM_T) core_swap_teams();
-		match_show_teams();
-		match_start(4);
-		
-	}	
 	else
 	{
 		match_show_teams();
 		match_start(4);
-	}
+		
+	}	
 	vote_ga_team_voting_result[0] = 0;
 	vote_ga_team_voting_result[1] = 0;
-	vote_gn_TeamVoting = 0;
+	vote_set_is_team_voting(false);
 	menu_destroy(vote_gm_team_voting);
 }
 

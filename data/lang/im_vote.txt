@@ -1,7 +1,7 @@
 [en]
 VOTE_TEAM_TITLE = Voting for your team:
-CT = Counter-Terrorisms
-T = Terrorisms
+SWITCH = Switch
+KEEP = Keep
 EXIT = EXIT
 IN_VOTING = Voting is in progress now...
 VOTE_MAP_TITLE = Vote for maps
@@ -14,8 +14,8 @@ VOTE_NO_ACCESS = Only administrators can vote maps in match!
 
 [cn]
 VOTE_TEAM_TITLE = 投票选择你的队伍？
-CT = 反恐精英
-T = 恐怖分子
+SWITCH = 交换
+KEEP = 保持
 EXIT = 退出
 IN_VOTING = 投票正在进行当中。
 VOTE_MAP_TITLE = 投票更换地图

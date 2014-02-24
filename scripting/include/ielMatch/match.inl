@@ -32,7 +32,6 @@ public match_plugin_init()
 	register_concmd("knife", "match_force_start_knife", IM_ACCESS);
 	register_concmd("r3", "match_force_start_common", IM_ACCESS);
 
-	register_event("TeamScore", "match_get_team_score", "a");
 	register_event("CurWeapon", "match_weapon_detect", "be", "1=1");
 
 	register_message(get_user_msgid("TextMsg"), "match_knife_check_timesup");
@@ -369,25 +368,21 @@ public match_stop(matchtype)
 	return PLUGIN_CONTINUE;
 }
 
-public match_get_team_score()
-{
-	new team[32];
-	read_data(1,team,31);
-	if(match_get_inmatch() && match_get_issechalf())
-	{
-		if(equal(team,"CT")) match_team_a_score[1] = read_data(2);
-		else if (equal(team,"TERRORIST")) match_team_b_score[1] = read_data(2);
-	}
-	else if(match_get_inmatch() && !match_get_issechalf())
-	{
-		if(equal(team,"CT")) match_team_b_score[0] = read_data(2);
-		else if (equal(team,"TERRORIST")) match_team_a_score[0] = read_data(2);	
-	}
-	return PLUGIN_CONTINUE;
-}
-
 public match_end_round()
 {
+	new param[12];
+	read_data(2,param,8);
+	if((!match_get_iskniferound() && match_get_inmatch()) && !match_get_issechalf())
+	{
+		if (param[7]=='t') match_team_a_score[0]++;
+		else if (param[7]=='c') match_team_b_score[0]++;
+	}
+	else if((!match_get_iskniferound() && match_get_inmatch()) && match_get_issechalf())
+	{
+		if (param[7]=='c') match_team_a_score[0]++;
+		else if (param[7]=='t') match_team_b_score[0]++;
+	}
+
 	if(get_pcvar_num(match_p_allow_show_score))
 	{
 		match_show_score(match_total_score,match_team_a_score,match_team_b_score);	
