@@ -47,13 +47,15 @@ public plugin_init()
 	register_logevent("round_start", 2, "0=World triggered", "1=Round_Start");
 
 	RegisterHam(Ham_Spawn, "player", "FwdPlayerSpawn", 1);
-
+	
+	core_plug_init();
 	tt_plugin_init();
 	tm_plugin_init();
 	asr_plugin_init();
 	rdy_plugin_init();
 	match_plugin_init();
 	vote_plugin_init();
+	ss_plugin_init();
 
 	rdy_set_task();
 	match_start(0);

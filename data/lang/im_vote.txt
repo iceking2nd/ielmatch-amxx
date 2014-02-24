@@ -23,5 +23,5 @@ VOTE_MAP_DROP = 选择放弃
 VOTE_MAP_CHOOSE = 选择了
 VOTE_MAP_NOCHANGE = 投票换图的结果与当前地图一致,不更换地图
 VOTE_MAP_CHANGETO = 投票完毕,服务器将在30秒后更换地图
-VOTE_MAP_REFRESH = 投票换图的结果与当前地图一直，服务器将在30秒后刷新当前地图
+VOTE_MAP_REFRESH = 投票换图的结果与当前地图一致，服务器将在30秒后刷新当前地图
 VOTE_NO_ACCESS = 比赛开始后只有管理员可以发起投票换图！

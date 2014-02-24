@@ -35,9 +35,8 @@ new CsInternalModel:_ModelsRandom[8] =
 	CS_CT_SAS
 }
 
-new core_g_swap_team;
 new bool:core_g_ChangeOneModels[33];
-new core_g_ServerName, core_g_Hostname;
+new core_g_Hostname;
 
 public core_plug_init()
 {
@@ -47,8 +46,6 @@ public core_plug_init()
 	register_clcmd("say time", "core_GetTime");
 	register_clcmd("say sj", "core_GetTime");
 
-	core_g_swap_team = CreateMultiForward("swap_team", ET_IGNORE);
-	core_g_ServerName = get_user_msgid("ServerName");
 	core_g_Hostname = get_cvar_pointer("hostname");
 }
 
@@ -337,7 +334,7 @@ stock SetServerName(msg[], {Float,Sql,Result,_}:...)
 {
 	static text[64];
 	vformat(text, charsmax(text), msg, 2);
-	message_begin(MSG_ALL, core_g_ServerName, {0,0,0}, 0);
+	message_begin(MSG_ALL, get_user_msgid("ServerName"), {0,0,0}, 0);
 	write_string(text);
 	message_end();
 	

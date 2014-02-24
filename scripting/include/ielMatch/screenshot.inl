@@ -1,14 +1,14 @@
 new ss_p_allow_screenshot;
 
-public ss_plugin_inti()
+public ss_plugin_init()
 {
 	ss_p_allow_screenshot = register_cvar("im_allow_screenshot","1");
 }
 
 public bool:ss_get_allow()
 {
-	if(get_pcvar_num(ss_p_allow_screenshot) == 1) return true;
-	return false;
+	if(!get_pcvar_num(ss_p_allow_screenshot)) return false;
+	return true;
 }
 
 public ss_screenshot()

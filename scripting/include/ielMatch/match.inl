@@ -221,59 +221,57 @@ public match_start(matchtype)
 		case 1:
 		{
 			//Knife Round
+			match_r3(matchtype);
 			match_set_inmatch(true);
 			match_set_iskniferound(true);
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
-			match_r3(matchtype);
 			return PLUGIN_CONTINUE;
 		}
 		case 2:
 		{
 			//OverTime Round
+			match_r3(matchtype);
 			match_set_inmatch(true);
 			match_set_iskniferound(false);
 			match_set_issechalf(false);
 			match_set_isot(true);
 			match_set_iswarm(false);
-			match_r3(matchtype);
 			return PLUGIN_CONTINUE;
 		}
 		case 3:
 		{
 			//OverTime Second Half
 			
+			match_r3(matchtype);
 			match_set_inmatch(true);
 			match_set_iskniferound(false);
 			match_set_issechalf(true);
 			match_set_isot(true);
 			match_set_iswarm(false);
-			match_r3(matchtype);
 			return PLUGIN_CONTINUE;
 		}
 		case 4:
 		{
 			//Common Round
-			match_total_score[0] = 0;
-			match_total_score[1] = 0;
+			match_r3(matchtype);
 			match_set_inmatch(true);
 			match_set_iskniferound(false);
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
-			match_r3(matchtype);
 			return PLUGIN_CONTINUE;
 		}
 		case 5:
 		{
 			//Common Second Half
+			match_r3(matchtype);
 			match_set_inmatch(true);
 			match_set_iskniferound(false);
 			match_set_issechalf(true);
 			match_set_isot(false);
 			match_set_iswarm(false);
-			match_r3(matchtype);
 			return PLUGIN_CONTINUE;
 		}
 		default:
@@ -379,16 +377,18 @@ public match_end_round()
 	}
 	else if((!match_get_iskniferound() && match_get_inmatch()) && match_get_issechalf())
 	{
-		if (param[7]=='c') match_team_a_score[0]++;
-		else if (param[7]=='t') match_team_b_score[0]++;
+		if (param[7]=='c') match_team_a_score[1]++;
+		else if (param[7]=='t') match_team_b_score[1]++;
 	}
 
+	client_print(0, print_chat, "[iM] %d %d %d %d %d %d", match_total_score[0], match_total_score[1], match_team_a_score[0], match_team_a_score[1], match_team_b_score[0],match_team_b_score[1]);
+	
 	if(get_pcvar_num(match_p_allow_show_score))
 	{
 		match_show_score(match_total_score,match_team_a_score,match_team_b_score);	
 	}
 
-	if(!match_get_isot())
+	if(match_get_inmatch() && !match_get_isot())
 	{
 		if(!match_get_issechalf())
 		{
@@ -426,6 +426,7 @@ public match_end_round()
 					get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 					SetServerName(HostName);
 					ColorChat( 0, GREY, "Match Finished & Good Game.");
+					set_task(3.0, "vote_map_menu");
 					match_start(0);
 				}
 			}
@@ -439,11 +440,12 @@ public match_end_round()
 				new HostName[64];
 				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 				SetServerName(HostName);
+				set_task(3.0, "vote_map_menu");
 				match_start(0);
 			}
 		}
 	}
-	else
+	else if(match_get_inmatch() && match_get_isot())
 	{
 		if(!match_get_issechalf())
 		{
@@ -482,6 +484,7 @@ public match_end_round()
 				new HostName[64];
 				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 				SetServerName(HostName);
+				set_task(3.0, "vote_map_menu");
 				match_start(0);
 			}
 		}
