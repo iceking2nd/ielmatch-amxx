@@ -209,23 +209,32 @@ public is_player(id)
 	return false;
 }
 
-public core_swap_team()
+public core_swap_teams()
 {
-	new gResult;
-	ExecuteForward(core_g_swap_team, gResult);
-	static player;
-	for(player = 1; player <= get_maxplayers(); player++)
+	new playersCT[32];
+	new playersT[32];
+	new nbrCT, nbrT;
+	
+	client_print(0,print_chat,"* [iM] %L", LANG_PLAYER, "SWITCHING_TEAMS");
+	
+	get_players(playersCT,nbrCT,"e","CT");
+	get_players(playersT,nbrT,"e","TERRORIST");
+
+	for(new i = 0; i < nbrCT; i++)
 	{
-		if(!is_user_connected(player)) continue;
-		
-		switch(get_user_team(player))
-		{
-			case 1: cs_set_user_team(player, 2);
-			case 2: cs_set_user_team(player, 1);
-		}
-		user_kill(player, 1);
-		set_task(1.0, "core_OpenModelMenu", player);
+		cs_set_user_team(playersCT[i], CS_TEAM_T);
+
+		client_print(playersCT[i],print_chat,"* [iM] %L", playersCT[i], "NOW_ON_T");
 	}
+
+	for(new i = 0; i < nbrT; i++)
+	{
+		cs_set_user_team(playersT[i], CS_TEAM_CT);
+		
+		client_print(playersT[i], print_chat, "* [iM] %L", playersT[i], "NOW_ON_CT");
+	}
+
+	return PLUGIN_CONTINUE;
 }
 
 public core_OpenModelMenu(id)

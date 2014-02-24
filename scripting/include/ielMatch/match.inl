@@ -402,7 +402,7 @@ public match_end_round()
 				match_total_score[0] += match_team_a_score[0];
 				match_total_score[1] += match_team_b_score[0];
 				match_stop(4);
-				set_task(1.5, "match_swap_teams");
+				set_task(1.5, "core_swap_teams");
 				match_start(5);
 			}
 		}
@@ -420,7 +420,7 @@ public match_end_round()
 
 				if(get_pcvar_num(match_p_allow_ot))
 				{
-					set_task(1.5, "match_swap_teams");
+					set_task(1.5, "core_swap_teams");
 					match_stop(5);
 					match_start(2);
 				}
@@ -456,7 +456,7 @@ public match_end_round()
 			{
 				match_total_score[0] += match_team_a_score[0];
 				match_total_score[1] += match_team_b_score[0];
-				set_task(1.5, "match_swap_teams");
+				set_task(1.5, "core_swap_teams");
 				match_stop(2);
 				match_start(3);
 			}
@@ -473,7 +473,7 @@ public match_end_round()
 				match_team_b_score[0] = 0;
 				match_team_b_score[1] = 0;
 
-				set_task(1.5, "match_swap_teams");
+				set_task(1.5, "core_swap_teams");
 				match_stop(3);
 				match_start(2);
 			}
@@ -495,7 +495,7 @@ public match_end_round()
 
 public match_show_score(total[],teama[],teamb[])
 {
-	if(match_get_inmatch())
+	if(match_get_inmatch() && !match_get_iskniferound())
 	{
 		new ScoreMsg[128];
 		new teamatag[16], teambtag[16];
@@ -578,34 +578,6 @@ public match_round_start()
 	}
 }
 
-public match_swap_teams()
-{
-	new playersCT[32];
-	new playersT[32];
-	new nbrCT, nbrT;
-	
-	client_print(0,print_chat,"* [iM] %L", LANG_PLAYER, "SWITCHING_TEAMS");
-	
-	get_players(playersCT,nbrCT,"e","CT");
-	get_players(playersT,nbrT,"e","TERRORIST");
-
-	for(new i = 0; i < nbrCT; i++)
-	{
-		cs_set_user_team(playersCT[i], CS_TEAM_T);
-
-		client_print(playersCT[i],print_chat,"* [iM] %L", playersCT[i], "NOW_ON_T");
-	}
-
-	for(new i = 0; i < nbrT; i++)
-	{
-		cs_set_user_team(playersT[i], CS_TEAM_CT);
-		
-		client_print(playersT[i], print_chat, "* [iM] %L", playersT[i], "NOW_ON_CT");
-	}
-
-	return PLUGIN_CONTINUE;
-}
-
 public match_show_teams()
 {
 		new msgt[512],msgct[512],tops,ctops;
@@ -661,9 +633,18 @@ public match_knife_check_timesup( const MsgId, const MsgDest, const MsgEntity )
 		get_msg_arg_string(2, message, charsmax(message));
 		if(equal(message,"#Target_Saved"))
 		{
-			client_print(0, print_center, "%L", LANG_PLAYER, "KNIFE_TARGET_SAVED");
+			set_hudmessage(255, 0, 0, -1.0, 0.43, 0, 0.0, 10.0, 0.0, 0.0, 1);
+			show_hudmessage(0, "%L", LANG_PLAYER, "KNIFE_TARGET_SAVED");
 			match_stop(1);
 			match_start(1);
+		}
+		else if(equal(message, "#Terrorists_Win"))
+		{
+			vote_knife_round_win(CS_TEAM_T);
+		}
+		else if(equal(message, "#CTs_Win"))
+		{
+			vote_knife_round_win(CS_TEAM_CT);
 		}
 	}
 }

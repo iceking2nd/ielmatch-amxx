@@ -100,19 +100,6 @@ public restart_round()
 
 public end_round()
 {
-	if(match_get_iskniferound())
-	{
-		new param[12]	
-		read_data(2,param,8)
-		if (param[7]=='c') //%!MRAD_ctwin
-		{
-			vote_knife_round_win(CS_TEAM_CT)
-		}
-		else //%!MRAD_terwin
-		{
-			vote_knife_round_win(CS_TEAM_T)
-		}
-	}
 	tm_end_round();
 	match_end_round();
 }

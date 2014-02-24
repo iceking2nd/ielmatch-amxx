@@ -23,6 +23,9 @@ public vote_set_is_vote_map(bool:val) vote_gb_map_voting = val;
 public vote_plugin_init()
 {
 	register_clcmd("say votemap", "vote_check_access", IM_ACCESS);
+	vote_gn_TeamVoting = 0;
+	vote_ga_team_voting_result[0] = 0;
+	vote_ga_team_voting_result[1] = 0;
 }
 
 public vote_check_access(id, level)
@@ -91,14 +94,14 @@ public vote_team_vote_end(args[])
 
 	if(vote_ga_team_voting_result[0] > vote_ga_team_voting_result[1])
 	{
-		if(win_team == CS_TEAM_CT) core_swap_team();
+		if(win_team == CS_TEAM_CT) core_swap_teams();
 		match_show_teams();
 		match_start(4);
 		
 	}
 	else if(vote_ga_team_voting_result[1] > vote_ga_team_voting_result[0])
 	{
-		if(win_team == CS_TEAM_T) core_swap_team();
+		if(win_team == CS_TEAM_T) core_swap_teams();
 		match_show_teams();
 		match_start(4);
 		
