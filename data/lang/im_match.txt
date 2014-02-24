@@ -12,6 +12,7 @@ WARMUP = Loading warmup mode after restart!
 SWITCHING_TEAMS = Switching teams
 NOW_ON_CT = You are being switched to Counter-terrorists
 NOW_ON_T = You are being switched to Terrorists
+KNIFE_TARGET_SAVED = Knife round over cause time's up,restart knife round!
 
 [cn]
 NO_ACCESS = 对不起，您没有权限使用该命令！
@@ -27,3 +28,4 @@ WARMUP = 刷新后载入热身模式！
 SWITCHING_TEAMS = 正在交换队伍
 NOW_ON_CT = 您被调换至反恐精英
 NOW_ON_T = 您被调换至恐怖分子
+KNIFE_TARGET_SAVED = 刀局因超时结束，故重新开始刀局！

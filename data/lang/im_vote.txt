@@ -3,9 +3,25 @@ VOTE_TEAM_TITLE = Voting for your team:
 CT = Counter-Terrorisms
 T = Terrorisms
 EXIT = EXIT
+IN_VOTING = Voting is in progress now...
+VOTE_MAP_TITLE = Vote for maps
+VOTE_MAP_DROP = choose drop
+VOTE_MAP_CHOOSE = choose
+VOTE_MAP_NOCHANGE = The result is the current map,the server will not change the map.
+VOTE_MAP_CHANGETO = Vote ended.After 30 seconds,the server will change to
+VOTE_MAP_REFRESH = The result is the current map,the server will refresh the current map after 30 seconds.
+VOTE_NO_ACCESS = Only administrators can vote maps in match!
 
 [cn]
 VOTE_TEAM_TITLE = 投票选择你的队伍？
 CT = 反恐精英
 T = 恐怖分子
 EXIT = 退出
+IN_VOTING = 投票正在进行当中。
+VOTE_MAP_TITLE = 投票更换地图
+VOTE_MAP_DROP = 选择放弃
+VOTE_MAP_CHOOSE = 选择了
+VOTE_MAP_NOCHANGE = 投票换图的结果与当前地图一致,不更换地图
+VOTE_MAP_CHANGETO = 投票完毕,服务器将在30秒后更换地图
+VOTE_MAP_REFRESH = 投票换图的结果与当前地图一直，服务器将在30秒后刷新当前地图
+VOTE_NO_ACCESS = 比赛开始后只有管理员可以发起投票换图！

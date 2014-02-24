@@ -58,7 +58,7 @@ public rdy_check_task(id)
 		ShowDirectorMessage(id, 0.61, 0.30, 255, 255, 255, 0, 0.1, 6.0, 0.0, 0.0, "%L", LANG_PLAYER, "DASHBOARD_MSG1");
 		ShowDirectorMessage(id, 0.61, 0.43, 255, 255, 255, 0, 0.1, 6.0, 0.0, 0.0, "%L", LANG_PLAYER, "DASHBOARD_MSG2");
 		ShowDirectorMessage(id, 0.61, 0.56, 255, 255, 255, 0, 0.1, 6.0, 0.0, 0.0, "%L", LANG_PLAYER, "DASHBOARD_MSG3");
-		ShowDirectorMessage(id, 0.61, 0.70, 255, 255, 255, 0, 0.1, 6.0, 0.0, 0.0, "%s v%s^nCopyright (C) 2012 by %s" ,PLUGIN,VERSION,AUTHOR);
+		ShowDirectorMessage(id, 0.61, 0.70, 255, 255, 255, 0, 0.1, 6.0, 0.0, 0.0, "%s v%s^nCopyright (C) 2014 by %s" ,PLUGIN,VERSION,AUTHOR);
 
 		if (rdy_player_ready_num >= 10)
 		{

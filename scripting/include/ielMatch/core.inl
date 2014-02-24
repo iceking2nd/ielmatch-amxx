@@ -334,3 +334,13 @@ stock SetServerName(msg[], {Float,Sql,Result,_}:...)
 	
 	console_print(0, text);
 }
+
+public fnCompare(elem1[], elem2[])
+{
+	if(elem1[1] > elem2[1]) 
+		return -1;
+	else if(elem1[1] < elem2[1])
+		return 1;
+	
+	return 0;
+}

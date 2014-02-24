@@ -6,7 +6,7 @@ new bool:match_iswarm;
 new match_team_a_score[2], match_team_b_score[2], match_total_score[2];
 new match_p_allow_show_score;
 new match_p_allow_ot;
-new match_p_allow_changetag, match_p_teamatag, match_p_teambtag;
+new match_p_allow_changetag, match_p_teamatag, match_p_teambtag, match_ga_player_orig_name[33][128];
 new MATCH_MSG_TR, MATCH_MSG_CT;
 
 
@@ -35,6 +35,8 @@ public match_plugin_init()
 	register_event("TeamScore", "match_get_team_score", "a");
 	register_event("CurWeapon", "match_weapon_detect", "be", "1=1");
 
+	register_message(get_user_msgid("TextMsg"), "match_knife_check_timesup");
+
 	MATCH_MSG_TR = CreateHudSyncObj();
 	MATCH_MSG_CT = CreateHudSyncObj();
 
@@ -46,6 +48,16 @@ public match_plugin_init()
 
 	match_total_score[0] = 0;
 	match_total_score[1] = 0;
+}
+
+public match_client_connect(id)
+{
+	get_user_name(id, match_ga_player_orig_name[id], 128);
+}
+
+public match_client_disconnect(id)
+{
+	match_ga_player_orig_name[id] = "";
 }
 
 public match_force_start_knife (id, level)
@@ -244,6 +256,8 @@ public match_start(matchtype)
 		case 4:
 		{
 			//Common Round
+			match_total_score[0] = 0;
+			match_total_score[1] = 0;
 			match_set_inmatch(true);
 			match_set_iskniferound(false);
 			match_set_issechalf(false);
@@ -300,6 +314,8 @@ public match_stop(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
+			
+			if(ss_get_allow())ss_screenshot;
 
 			return PLUGIN_CONTINUE;
 		}
@@ -311,6 +327,8 @@ public match_stop(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 
+			if(ss_get_allow())ss_screenshot;
+
 			return PLUGIN_CONTINUE;
 		}
 		case 4:
@@ -321,6 +339,8 @@ public match_stop(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 
+			if(ss_get_allow())ss_screenshot;
+
 			return PLUGIN_CONTINUE;
 		}
 		case 5:
@@ -330,6 +350,8 @@ public match_stop(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
+
+			if(ss_get_allow())ss_screenshot;
 
 			return PLUGIN_CONTINUE;
 		}
@@ -379,8 +401,8 @@ public match_end_round()
 			{
 				match_total_score[0] += match_team_a_score[0];
 				match_total_score[1] += match_team_b_score[0];
-				set_task(1.5, "match_swap_teams");
 				match_stop(4);
+				set_task(1.5, "match_swap_teams");
 				match_start(5);
 			}
 		}
@@ -405,6 +427,9 @@ public match_end_round()
 				else
 				{
 					match_stop(5);
+					new HostName[64];
+					get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
+					SetServerName(HostName);
 					ColorChat( 0, GREY, "Match Finished & Good Game.");
 					match_start(0);
 				}
@@ -416,6 +441,9 @@ public match_end_round()
 				match_stop(5);
 				if (match_total_score[0] == 16) ColorChat( 0, RED, "Match Finished & Good Game.");
 				else ColorChat( 0, BLUE, "Match Finished & Good Game.");
+				new HostName[64];
+				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
+				SetServerName(HostName);
 				match_start(0);
 			}
 		}
@@ -454,6 +482,11 @@ public match_end_round()
 				match_total_score[0] += match_team_a_score[1];
 				match_total_score[1] += match_team_b_score[1];
 				match_stop(3);
+				if (match_total_score[0] == 4) ColorChat( 0, RED, "Match Finished & Good Game.");
+				else ColorChat( 0, BLUE, "Match Finished & Good Game.");
+				new HostName[64];
+				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
+				SetServerName(HostName);
 				match_start(0);
 			}
 		}
@@ -618,4 +651,19 @@ public match_show_teams()
 		ShowSyncHudMsg(0,MATCH_MSG_TR,msgt);
 		set_hudmessage(255, 0, 0, 0.20, 0.41, 0, 0.4, 10.0, 0.08, 2.0, -1);
 		show_hudmessage(0, "^n^n^n^n^n^n^n-------------------------");
+}
+
+public match_knife_check_timesup( const MsgId, const MsgDest, const MsgEntity )
+{
+	if(match_get_iskniferound())
+	{
+		static message[32];
+		get_msg_arg_string(2, message, charsmax(message));
+		if(equal(message,"#Target_Saved"))
+		{
+			client_print(0, print_center, "%L", LANG_PLAYER, "KNIFE_TARGET_SAVED");
+			match_stop(1);
+			match_start(1);
+		}
+	}
 }

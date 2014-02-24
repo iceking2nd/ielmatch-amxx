@@ -29,6 +29,7 @@
 #include "include/ielMatch/match.inl"
 #include "include/ielMatch/ready.inl"
 #include "include/ielMatch/vote.inl"
+#include "include/ielMatch/screenshot.inl"
 
 public plugin_init()
 {
@@ -52,6 +53,7 @@ public plugin_init()
 	asr_plugin_init();
 	rdy_plugin_init();
 	match_plugin_init();
+	vote_plugin_init();
 
 	rdy_set_task();
 	match_start(0);
@@ -65,11 +67,13 @@ public plugin_cfg()
 public client_connect(id)
 {
 	tt_client_connect(id);
+	match_client_connect(id);
 }
 
 public client_disconnect(id)
 {
 	rdy_client_disconnect(id);
+	match_client_disconnect(id);
 }
 
 public client_authorized(id)
