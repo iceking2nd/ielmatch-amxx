@@ -30,6 +30,7 @@
 #include "include/ielMatch/ready.inl"
 #include "include/ielMatch/vote.inl"
 #include "include/ielMatch/screenshot.inl"
+#include "include/ielMatch/record.inl"
 
 public plugin_init()
 {

@@ -15,8 +15,8 @@ public ss_screenshot()
 {
 	ss_open_scoreboard();
 	ShowDirectorMessage(0, 0.60, 0.63, 255, 255, 255, 0, 3.0, 0.0, 0.0, 0.0, "%s v%s^nCopyright (C) 2012 by %s" ,PLUGIN,VERSION,AUTHOR);
-	set_task(0.5,"ss_get_screenshot");
-	set_task(1.0,"ss_close_scorebarod");
+	set_task(1.0,"ss_get_screenshot");
+	set_task(2.0,"ss_close_scorebarod");
 }
 
 public ss_open_scoreboard()
