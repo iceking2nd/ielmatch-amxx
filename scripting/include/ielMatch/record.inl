@@ -99,6 +99,8 @@ public rec_hltv_demo_start(id,level,cid)
 		while(replace(hltv_demo_name,255," ","-")) {}
 		formatex(hltv_command, 511, "say RECORDING");
 		hltv_rcon_command(hltv_command, 0);
+		formatex(hltv_command, 511, "delay %f",get_pcvar_float(rec_p_hltv_delay));
+		hltv_rcon_command(hltv_command, 0);
 		format(hltv_command, 511, "record %s", hltv_demo_name);
 		hltv_rcon_command(hltv_command, 0);
 	}
