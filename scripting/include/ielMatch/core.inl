@@ -37,14 +37,18 @@ new CsInternalModel:_ModelsRandom[8] =
 
 new bool:core_g_ChangeOneModels[33];
 new core_g_Hostname;
+new core_p_gamename;
 
 public core_plugin_init()
 {
 	register_srvcmd("im_matchname", "core_get_matchname");
+	core_p_gamename = register_cvar("im_gamename", "");
 
 	register_clcmd("say thetime", "core_GetTime");
 	register_clcmd("say time", "core_GetTime");
 	register_clcmd("say sj", "core_GetTime");
+
+	register_forward(FM_GetGameDescription, "core_fwGameDesc")
 
 	core_g_Hostname = get_cvar_pointer("hostname");
 }
@@ -55,6 +59,15 @@ public core_get_matchname()
 	read_argv(0, ThisCmd, 63);
 	if(equal(ThisCmd, "im_matchname"))
 		read_argv(1, Export[MATCHNAME], 63);
+}
+
+public core_fwGameDesc()
+{
+	static gamename[32];
+	get_pcvar_string( core_p_gamename, gamename, 31 );
+	if ( strlen(gamename) <= 0 ) format(gamename, 32, "%s %s", PLUGIN, VERSION);
+	forward_return( FMV_STRING, gamename );
+	return FMRES_SUPERCEDE;
 }
 
 stock ShowDirectorMessage(id, Float:x, Float:y, r, g, b, effect, Float:fadeintime, Float:fadeouttime, Float:holdtime, Float:fxtime, msg[], {Float, Sql, Result, _}:...)

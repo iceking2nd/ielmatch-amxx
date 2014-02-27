@@ -15,7 +15,7 @@
 #endif
 
 #define PLUGIN	"iel Match Plugins"
-#define VERSION	"0.1"
+#define VERSION	"1.0b1"
 #define AUTHOR	"iel"
 #define LOADING	"^n^t%s v%s, Copyright (C) 2014 by %s^n"
 
@@ -70,6 +70,10 @@ public plugin_init()
 
 public plugin_cfg()
 {
+	new customdir[64];
+	get_customdir(customdir, 63);
+	server_cmd("exec ^"%s/ielMatch/setting.cfg^"", customdir);
+
 	tm_plugin_cfg();
 }
 
