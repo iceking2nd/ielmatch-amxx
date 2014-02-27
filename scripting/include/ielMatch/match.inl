@@ -345,6 +345,8 @@ public match_stop(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 
+			match_change_team_tag();
+
 			set_task(1.0,"rec_pov_demo_stop");
 
 			if(ss_get_allow())ss_screenshot;
@@ -535,17 +537,17 @@ public match_show_score(total[],teama[],teamb[])
 			if ((total[0] + teama[0]) > (total[1] + teamb[0]))
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teamatag, teambtag, total[0] + teama[0],total[1] + teamb[0]);
-				ColorChat( 0, RED, "%s %L %d-%d", teamatag,total[0] + teama[0], LANG_PLAYER, "MATCH_IS_WINNING",total[1] + teamb[0]);
+				ColorChat( 0, RED, "%s %L %d-%d", teamatag, LANG_PLAYER, "MATCH_IS_WINNING",total[0] + teama[0],total[1] + teamb[0]);
 			}
 			else if ((total[0] + teama[0]) < (total[1] + teamb[0]))
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teambtag, teamatag, total[1] + teamb[0],total[0] + teama[0]);
-				ColorChat( 0, BLUE, "%s %L %d-%d", teambtag, total[1] + teamb[0], LANG_PLAYER, "MATCH_IS_WINNING",total[0] + teama[0]);
+				ColorChat( 0, BLUE, "%s %L %d-%d", teambtag, LANG_PLAYER, "MATCH_IS_WINNING", total[1] + teamb[0],total[0] + teama[0]);
 			}
 			else
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teamatag, teambtag, total[1] + teamb[0],total[0] + teama[0]);	
-				ColorChat( 0, GREY, "%L %d-%d",total[1] + teamb[0], LANG_PLAYER, "MATCH_IS_TIED",total[0] + teama[0]);
+				ColorChat( 0, GREY, "%L %d-%d", LANG_PLAYER, "MATCH_IS_TIED",total[1] + teamb[0],total[0] + teama[0]);
 			}
 			SetServerName(ScoreMsg);
 		}
@@ -554,17 +556,17 @@ public match_show_score(total[],teama[],teamb[])
 			if ((total[0] + teama[1]) > (total[1] + teamb[1]))
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teamatag, teambtag, total[0] + teama[1],total[1] + teamb[1]);
-				ColorChat( 0, BLUE, "%s %L %d-%d", teamatag,total[0] + teama[1], LANG_PLAYER, "MATCH_IS_WINNING",total[1] + teamb[1]);
+				ColorChat( 0, BLUE, "%s %L %d-%d", teamatag, LANG_PLAYER, "MATCH_IS_WINNING",total[0] + teama[1],total[1] + teamb[1]);
 			}
 			else if ((total[0] + teama[1]) < (total[1] + teamb[1]))
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teambtag, teamatag, total[1] + teamb[1],total[0] + teama[1]);
-				ColorChat( 0, RED, "%s %L %d-%d", teambtag, total[1] + teamb[1], LANG_PLAYER, "MATCH_IS_WINNING",total[0] + teama[1]);
+				ColorChat( 0, RED, "%s %L %d-%d", teambtag, LANG_PLAYER, "MATCH_IS_WINNING", total[1] + teamb[1],total[0] + teama[1]);
 			}
 			else
 			{
 				formatex(ScoreMsg, charsmax(ScoreMsg), "%s vs %s | %d:%d", teamatag, teambtag, total[1] + teamb[1],total[0] + teama[1]);	
-				ColorChat( 0, GREY, "%L %d-%d",total[1] + teamb[1], LANG_PLAYER, "MATCH_IS_TIED",total[0] + teama[1]);
+				ColorChat( 0, GREY, "%L %d-%d", LANG_PLAYER, "MATCH_IS_TIED",total[1] + teamb[1],total[0] + teama[1]);
 			}
 			SetServerName(ScoreMsg);
 		}
@@ -680,21 +682,24 @@ public match_change_team_tag()
 		{
 			for(new i = 0; i < get_maxplayers(); i++)
 			{
-				get_user_name(i, name, charsmax(name));
-				if(cs_get_user_team(i) == CS_TEAM_T)
+				if(is_player(i))
 				{
-					if ( containi(name, teamatag) == -1 )
+					get_user_name(i, name, charsmax(name));
+					if(cs_get_user_team(i) == CS_TEAM_T)
 					{
-						format(name, charsmax(name), "%s %s", teamatag, match_ga_player_orig_name[i]);
-						set_user_info(i, "name", name);
+						if ( containi(name, teamatag) == -1 )
+						{
+							format(name, charsmax(name), "%s %s", teamatag, match_ga_player_orig_name[i]);
+							set_user_info(i, "name", name);
+						}
 					}
-				}
-				if(cs_get_user_team(i) == CS_TEAM_CT)
-				{
-					if ( containi(name, teambtag) == -1 )
+					if(cs_get_user_team(i) == CS_TEAM_CT)
 					{
-						format(name, charsmax(name), "%s %s", teambtag, match_ga_player_orig_name[i]);
-						set_user_info(i, "name", name);
+						if ( containi(name, teambtag) == -1 )
+						{
+							format(name, charsmax(name), "%s %s", teambtag, match_ga_player_orig_name[i]);
+							set_user_info(i, "name", name);
+						}
 					}
 				}
 			}
@@ -703,21 +708,24 @@ public match_change_team_tag()
 		{
 			for(new i = 0; i < get_maxplayers(); i++)
 			{
-				get_user_name(i, name, charsmax(name));
-				if(cs_get_user_team(i) == CS_TEAM_CT)
+				if(is_player(i))
 				{
-					if ( containi(name, teamatag) == -1 )
+					get_user_name(i, name, charsmax(name));
+					if(cs_get_user_team(i) == CS_TEAM_CT)
 					{
-						format(name, charsmax(name), "%s %s", teamatag, match_ga_player_orig_name[i]);
-						set_user_info(i, "name", name);
+						if ( containi(name, teamatag) == -1 )
+						{
+							format(name, charsmax(name), "%s %s", teamatag, match_ga_player_orig_name[i]);
+							set_user_info(i, "name", name);
+						}
 					}
-				}
-				if(cs_get_user_team(i) == CS_TEAM_T)
-				{
-					if ( containi(name, teambtag) == -1 )
+					if(cs_get_user_team(i) == CS_TEAM_T)
 					{
-						format(name, charsmax(name), "%s %s", teambtag, match_ga_player_orig_name[i]);
-						set_user_info(i, "name", name);
+						if ( containi(name, teambtag) == -1 )
+						{
+							format(name, charsmax(name), "%s %s", teambtag, match_ga_player_orig_name[i]);
+							set_user_info(i, "name", name);
+						}
 					}
 				}
 			}
