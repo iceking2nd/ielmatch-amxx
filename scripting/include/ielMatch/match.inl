@@ -238,6 +238,7 @@ public match_start(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(true);
 			match_set_iswarm(false);
+			rec_pov_demo_start();
 			return PLUGIN_CONTINUE;
 		}
 		case 3:
@@ -250,6 +251,7 @@ public match_start(matchtype)
 			match_set_issechalf(true);
 			match_set_isot(true);
 			match_set_iswarm(false);
+			rec_pov_demo_start();
 			return PLUGIN_CONTINUE;
 		}
 		case 4:
@@ -261,6 +263,8 @@ public match_start(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
+			rec_pov_demo_start();
+			set_task(1.0, "rec_hltv_demo_start");
 			return PLUGIN_CONTINUE;
 		}
 		case 5:
@@ -272,6 +276,7 @@ public match_start(matchtype)
 			match_set_issechalf(true);
 			match_set_isot(false);
 			match_set_iswarm(false);
+			rec_pov_demo_start();
 			return PLUGIN_CONTINUE;
 		}
 		default:
@@ -311,6 +316,8 @@ public match_stop(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
+
+			set_task(1.0,"rec_pov_demo_stop");
 			
 			if(ss_get_allow())ss_screenshot;
 
@@ -324,6 +331,8 @@ public match_stop(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 
+			set_task(1.0,"rec_pov_demo_stop");
+
 			if(ss_get_allow())ss_screenshot;
 
 			return PLUGIN_CONTINUE;
@@ -336,6 +345,8 @@ public match_stop(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 
+			set_task(1.0,"rec_pov_demo_stop");
+
 			if(ss_get_allow())ss_screenshot;
 
 			return PLUGIN_CONTINUE;
@@ -347,6 +358,8 @@ public match_stop(matchtype)
 			match_set_issechalf(false);
 			match_set_isot(false);
 			match_set_iswarm(false);
+
+			set_task(1.0,"rec_pov_demo_stop");
 
 			if(ss_get_allow())ss_screenshot;
 
@@ -428,8 +441,9 @@ public match_end_round()
 					new HostName[64];
 					get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 					SetServerName(HostName);
-					match_change_team_tag_back();
 					ColorChat( 0, GREY, "Match Finished & Good Game.");
+					match_change_team_tag_back();
+					set_task(5.0,"rec_hltv_demo_stop");
 					set_task(3.0, "vote_map_menu");
 					match_start(0);
 				}
@@ -445,6 +459,7 @@ public match_end_round()
 				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 				SetServerName(HostName);
 				match_change_team_tag_back();
+				set_task(5.0,"rec_hltv_demo_stop");
 				set_task(3.0, "vote_map_menu");
 				match_start(0);
 			}
@@ -490,6 +505,7 @@ public match_end_round()
 				get_pcvar_string(core_g_Hostname, HostName, charsmax(HostName));
 				SetServerName(HostName);
 				match_change_team_tag_back();
+				set_task(5.0,"rec_hltv_demo_stop");
 				set_task(3.0, "vote_map_menu");
 				match_start(0);
 			}

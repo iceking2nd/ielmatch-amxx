@@ -22,15 +22,17 @@
 #define IM_ACCESS ADMIN_LEVEL_A
 #define MAX_CLIENTS 32
 
-#include "include/ielMatch/core.inl"
 #include "include/ielMatch/teamtalk.inl"
 #include "include/ielMatch/team_money.inl"
 #include "include/ielMatch/anti_silentrun.inl"
-#include "include/ielMatch/match.inl"
+#include "include/ielMatch/core.inl"
 #include "include/ielMatch/ready.inl"
+#include "include/ielMatch/model.inl"
+#include "include/ielMatch/match.inl"
 #include "include/ielMatch/vote.inl"
 #include "include/ielMatch/screenshot.inl"
 #include "include/ielMatch/record.inl"
+
 
 public plugin_init()
 {
@@ -42,6 +44,7 @@ public plugin_init()
 	register_dictionary("im_ready.txt");
 	register_dictionary("im_match.txt");
 	register_dictionary("im_vote.txt");
+	register_dictionary("im_record.txt");
 
 	register_event("TextMsg", "restart_round", "a", "2&#Game_C", "2&#Game_w");
 	register_event("SendAudio", "end_round", "a", "2&%!MRAD_terwin", "2&%!MRAD_ctwin", "2&%!MRAD_rounddraw");
@@ -49,11 +52,14 @@ public plugin_init()
 
 	RegisterHam(Ham_Spawn, "player", "FwdPlayerSpawn", 1);
 	
-	core_plug_init();
+
+	core_plugin_init();
+	model_plugin_init();
 	tt_plugin_init();
 	tm_plugin_init();
 	asr_plugin_init();
 	rdy_plugin_init();
+	rec_plugin_init();
 	match_plugin_init();
 	vote_plugin_init();
 	ss_plugin_init();
@@ -77,6 +83,7 @@ public client_disconnect(id)
 {
 	rdy_client_disconnect(id);
 	match_client_disconnect(id);
+	model_client_disconnect(id);
 }
 
 public client_authorized(id)
@@ -87,6 +94,7 @@ public client_authorized(id)
 public client_putinserver(id)
 {
 	core_client_putinserver(id);
+	rec_client_putinserver(id);
 }
 
 public FwdPlayerSpawn(id)

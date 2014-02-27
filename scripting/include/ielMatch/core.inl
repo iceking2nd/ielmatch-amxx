@@ -38,7 +38,7 @@ new CsInternalModel:_ModelsRandom[8] =
 new bool:core_g_ChangeOneModels[33];
 new core_g_Hostname;
 
-public core_plug_init()
+public core_plugin_init()
 {
 	register_srvcmd("im_matchname", "core_get_matchname");
 
@@ -349,4 +349,18 @@ public fnCompare(elem1[], elem2[])
 		return 1;
 	
 	return 0;
+}
+
+public get_user_nums(teamid)
+{
+	new playernums = 0;
+	for(new i = 1; i <= get_maxplayers(); i++)
+	{
+		if(is_user_connected(i))
+		{
+			if(get_user_team(i) == teamid)
+				playernums++;
+		}
+	}
+	return playernums;
 }

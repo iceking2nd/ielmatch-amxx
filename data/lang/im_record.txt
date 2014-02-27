@@ -1,0 +1,7 @@
+[en]
+REC_POV_FILENAME = Recording your POV Demo now.File name:
+REC_POV_STOP = Record done.Please get your POV Demo in your cstrike directory.
+
+[cn]
+REC_POV_FILENAME = 正在录制你的POV Demo，文件名为
+REC_POV_STOP = 比赛录制完毕，请在游戏目录中获取POV Demo。
