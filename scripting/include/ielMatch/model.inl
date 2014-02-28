@@ -21,6 +21,12 @@ public model_plugin_init()
 	p_allow_spectators = get_cvar_pointer("allow_spectators");
 }
 
+public model_client_connect(id)
+{
+	g_changed[id] = false;
+	g_unassigned[id] = true;
+}
+
 public model_client_disconnect(id)
 {
 	g_changed[id] = false;

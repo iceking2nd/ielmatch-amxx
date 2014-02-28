@@ -80,6 +80,7 @@ public plugin_cfg()
 public client_connect(id)
 {
 	rdy_client_connect(id);
+	model_client_connect(id);
 	tt_client_connect(id);
 	match_client_connect(id);
 }
