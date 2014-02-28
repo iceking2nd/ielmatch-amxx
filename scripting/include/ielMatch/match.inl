@@ -264,6 +264,7 @@ public match_start(matchtype)
 			match_set_isot(false);
 			match_set_iswarm(false);
 			rec_pov_demo_start();
+			set_task(1.0, "match_change_team_tag");
 			set_task(1.0, "rec_hltv_demo_start");
 			return PLUGIN_CONTINUE;
 		}

@@ -131,6 +131,12 @@ public rdy_player_unready(id)
 	return PLUGIN_HANDLED;
 }
 
+public rdy_client_connect(id)
+{
+	rdy_player_kick_timeleft[id] = 0;
+	rdy_player_isready[id] = false;
+}
+
 public rdy_client_disconnect(id)
 {
 	if(rdy_player_isready[id])
