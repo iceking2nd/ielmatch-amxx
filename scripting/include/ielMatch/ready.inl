@@ -74,7 +74,7 @@ public rdy_kick_player(id)
 	new name[32];
 	get_user_name(id, name, 31);
 	new uID = get_user_userid(id);
-//	server_cmd("banid 1 #%d", uID);
+	server_cmd("banid 1 #%d", uID);
 	client_cmd(id, "echo ^"[iM] %L^"", id, "NOT_READY_KICK1");
 	server_cmd("kick #%d [iM] %L",uID, id, "NOT_READY_KICK1");
 	client_print(0, print_chat, "[iM] %s %L", name, LANG_PLAYER, "NOT_READY_KICK2");

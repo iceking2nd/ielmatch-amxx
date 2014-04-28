@@ -5,6 +5,7 @@ new vote_ga_map_voting_result[7];
 new bool:vote_gb_team_voting;
 new vote_gm_team_voting;
 new vote_ga_team_voting_result[2];
+new bool:vote_gb_player_voting = false;
 
 new const vote_ga_MapName[][] =
 {
@@ -21,10 +22,13 @@ public vote_get_is_vote_map() return vote_gb_map_voting;
 public vote_set_is_vote_map(bool:val) vote_gb_map_voting = val;
 public vote_get_is_team_voting() return vote_gb_team_voting;
 public vote_set_is_team_voting(bool:val) vote_gb_team_voting = val;
+public vote_get_is_player_voting() return vote_gb_player_voting;
+public vote_set_is_player_voting(bool:val) vote_gb_player_voting = val;
 
 public vote_plugin_init()
 {
 	register_clcmd("say votemap", "vote_check_access", IM_ACCESS);
+	register_clcmd("say vote", "vote_player_cmd");
 	vote_gb_team_voting = false;
 	vote_ga_team_voting_result[0] = 0;
 	vote_ga_team_voting_result[1] = 0;
@@ -206,4 +210,37 @@ public vote_map_end(taskid)
 public vote_map_changelevel(param[])
 {
 	server_cmd("changelevel %s", vote_ga_MapName[param[0]]);
+}
+
+public vote_player_cmd(id)
+{
+	if(!vote_get_is_player_voting())
+	{
+		switch(cs_get_user_team(id))
+		{
+			case CS_TEAM_T:
+			{
+
+			}
+
+			case CS_TEAM_CT:
+			{
+
+			}
+
+			case CS_TEAM_SPECTATOR:
+			{
+
+			}
+
+			default:
+			{
+				client_print(id, print_center, "%L", LANG_PLAYER, "VOTE_PLAYER_NOPERMIT");
+			}
+		}
+	}
+	else
+	{
+		client_print(id, print_center, "%L", LANG_PLAYER, "VOTE_PLAYER_INVOTING");
+	}
 }
