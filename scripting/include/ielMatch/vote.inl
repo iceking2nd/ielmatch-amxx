@@ -32,6 +32,7 @@ public vote_plugin_init()
 	vote_gb_team_voting = false;
 	vote_ga_team_voting_result[0] = 0;
 	vote_ga_team_voting_result[1] = 0;
+	vote_gb_player_voting = false;
 }
 
 public vote_check_access(id, level)
@@ -230,7 +231,7 @@ public vote_player_cmd(id)
 
 			case CS_TEAM_SPECTATOR:
 			{
-
+				client_print(id, print_center, "%L", LANG_PLAYER, "VOTE_PLAYER_SPECTATORS");
 			}
 
 			default:

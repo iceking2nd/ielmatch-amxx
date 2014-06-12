@@ -13,6 +13,7 @@ VOTE_MAP_REFRESH = The result is the current map,the server will refresh the cur
 VOTE_NO_ACCESS = Only administrators can vote maps in match!
 VOTE_PLAYER_NOPERMIT = Sorry,you have not been permited for executing this command.
 VOTE_PLAYER_INVOTING = A voting for kicking player is in progress,please try again later!
+VOTE_PLAYER_SPECTATORS = Can't vote player when you are in the spectators team!
 
 [cn]
 VOTE_TEAM_TITLE = 投票选择你的队伍？
@@ -29,3 +30,4 @@ VOTE_MAP_REFRESH = 投票换图的结果与当前地图一致，服务器将在3
 VOTE_NO_ACCESS = 比赛开始后只有管理员可以发起投票换图！
 VOTE_PLAYER_NOPERMIT = 对不起，您没有权限执行此命令。
 VOTE_PLAYER_INVOTING = 投票正在进行中，请稍后再试！
+VOTE_PLAYER_SPECTATORS = 观察者不能进行投票！
