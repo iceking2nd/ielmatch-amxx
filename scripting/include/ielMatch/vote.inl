@@ -217,6 +217,7 @@ public vote_player_cmd(id)
 {
 	if(!vote_get_is_player_voting())
 	{
+		vote_set_is_player_voting(true);
 		switch(cs_get_user_team(id))
 		{
 			case CS_TEAM_T:
