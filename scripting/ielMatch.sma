@@ -22,6 +22,8 @@
 #define IM_ACCESS ADMIN_LEVEL_A
 #define MAX_CLIENTS 32
 
+#pragma dynamic 32768
+
 #include "include/ielMatch/teamtalk.inl"
 #include "include/ielMatch/team_money.inl"
 #include "include/ielMatch/anti_silentrun.inl"
